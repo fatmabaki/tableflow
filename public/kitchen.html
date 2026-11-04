@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TableFlow · Kitchen</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .k { max-width: 760px; margin: 0 auto; padding: 16px; }
+  .k h1 { font: 400 28px var(--serif); margin-bottom: 8px; }
+  .ord { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; margin: 12px 0; }
+  .ord header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .ord ul { margin: 8px 0; padding-left: 18px; color: var(--ink-2); }
+  .pill { border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink); border-radius: 999px; padding: 2px 12px; font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+  .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+  .acts .btn { padding: 8px 14px; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="demo-banner">DEMO · staff/kitchen view (simple student version)</div>
+<div class="k">
+  <h1>Kitchen orders</h1>
+  <p class="note">Enter the staff key (STAFF_API_KEY). It is kept only in this tab's memory.</p>
+  <p><input class="input" id="key" type="password" placeholder="Staff key" autocomplete="off" style="max-width:320px"> <button class="btn" id="go">Load</button></p>
+  <p class="note" id="msg"></p>
+  <div id="list"></div>
+</div>
+<script>
+  let key = '', timer;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const call = async (method, url, body) => {
+    const r = await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'X-Staff-Key': key }, body: body ? JSON.stringify(body) : undefined });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error((d.error && d.error.message) || r.status);
+    return d;
+  };
+  async function load() {
+    try {
+      const orders = await call('GET', '/api/staff/orders');
+      document.getElementById('msg').textContent = `${orders.length} orders · refreshed ${new Date().toLocaleTimeString()}`;
+      document.getElementById('list').innerHTML = orders.map(o => `<div class="ord"><header><b>#${o.number} · Table ${o.table}${o.name ? ' · ' + esc(o.name) : ''}</b><span class="pill">${o.status}</span></header>
+        <ul>${o.lines.map(l => `<li>${l.qty}× ${esc(l.name)}${l.mods ? ' (' + esc(l.mods) + ')' : ''}${l.note ? ' — “' + esc(l.note) + '”' : ''}</li>`).join('')}</ul>
+        <div class="note">${o.paymentStatus === 'paid_simulated' ? 'Paid (SIMULATED)' : 'Unpaid — pay at table'} · $${o.total.toFixed(2)}</div>
+        <div class="acts">${['preparing', 'ready', 'served'].map(s => `<button class="btn ${o.status === s ? '' : 'ghost'}" data-id="${o.id}" data-s="${s}">${s}</button>`).join('')}</div></div>`).join('') || '<p>No orders yet.</p>';
+      document.querySelectorAll('[data-s]').forEach(b => b.onclick = async () => { try { await call('PATCH', `/api/staff/orders/${b.dataset.id}/status`, { status: b.dataset.s }); load(); } catch (e) { alert(e.message); } });
+    } catch (e) { document.getElementById('msg').textContent = 'Error: ' + e.message; clearInterval(timer); }
+  }
+  document.getElementById('go').onclick = () => { key = document.getElementById('key').value; clearInterval(timer); load(); timer = setInterval(load, 4000); };
+</script>
+</body>
+</html>

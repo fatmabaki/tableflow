@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TableFlow · Table QR codes</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="demo-banner">DEMO · sample table QR codes</div>
+<div class="qr-page">
+  <h1>Table QR codes</h1>
+  <p class="note">Each code opens the menu for that table. Scan with a phone on the same Wi-Fi (open this page via your network address, not “localhost”). <button class="btn no-print" style="padding:6px 12px;margin-left:8px" onclick="print()">Print</button></p>
+  <div class="qr-grid" id="grid"></div>
+</div>
+<script src="vendor/qrcode.js"></script>
+<script src="data.js"></script>
+<script>
+  const base = location.origin + location.pathname.replace(/qr\.html$/, '');
+  document.getElementById('grid').innerHTML = TF_DATA.tables.map(n => {
+    const url = `${base}?table=${n}`;
+    const qr = qrcode(0, 'M'); qr.addData(url); qr.make();
+    return `<div class="qr-card">${qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true })}<b>Table ${n}</b><small>Scan to order</small><br><a href="${url}">${url}</a></div>`;
+  }).join('');
+</script>
+</body>
+</html>

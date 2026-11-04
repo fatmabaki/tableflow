@@ -1,0 +1,35 @@
+// SIMULATED DATA - sample restaurant, menu and tables for the demo only.
+// Phase 2 replaces this with a real backend / database.
+window.TF_DATA = {
+  restaurant: { name: 'Olive & Ember', tagline: 'Mediterranean kitchen (demo restaurant)', currency: '$', taxRate: 0.08 },
+  tables: Array.from({ length: 12 }, (_, i) => i + 1),
+  categories: [
+    { id: 'starters', name: 'Starters' },
+    { id: 'mains', name: 'Mains' },
+    { id: 'pizza', name: 'Flatbreads' },
+    { id: 'desserts', name: 'Desserts' },
+    { id: 'drinks', name: 'Drinks' },
+  ],
+  items: [
+    { id: 's1', cat: 'starters', name: 'Whipped Feta & Honey', desc: 'Warm pita, thyme, chili honey drizzle.', price: 9.5, emoji: '🧆', tags: ['V'], hue: 38 },
+    { id: 's2', cat: 'starters', name: 'Charred Octopus', desc: 'Smoked paprika, lemon potatoes, salsa verde.', price: 15, emoji: '🐙', tags: ['GF'], hue: 12 },
+    { id: 's3', cat: 'starters', name: 'Roasted Beet Salad', desc: 'Goat cheese, pistachio, orange vinaigrette.', price: 11, emoji: '🥗', tags: ['V', 'GF'], hue: 330 },
+    { id: 'm1', cat: 'mains', name: 'Lamb Kofta Plate', desc: 'Grilled skewers, saffron rice, tzatziki.', price: 21, emoji: '🍢', tags: [], hue: 20,
+      options: [{ name: 'Spice level', type: 'single', required: true, choices: [{ n: 'Mild', p: 0 }, { n: 'Medium', p: 0 }, { n: 'Hot', p: 0 }] }] },
+    { id: 'm2', cat: 'mains', name: 'Herb-Crusted Salmon', desc: 'Fennel puree, charred broccolini, caper butter.', price: 24, emoji: '🐟', tags: ['GF'], hue: 190 },
+    { id: 'm3', cat: 'mains', name: 'Wild Mushroom Risotto', desc: 'Arborio, parmesan, truffle oil.', price: 18, emoji: '🍄', tags: ['V'], hue: 90,
+      options: [{ name: 'Add-ons', type: 'multi', choices: [{ n: 'Grilled chicken', p: 5 }, { n: 'Extra parmesan', p: 1.5 }] }] },
+    { id: 'm4', cat: 'mains', name: 'Ember Burger', desc: 'Dry-aged beef, caramelized onion, aioli, fries.', price: 19, emoji: '🍔', tags: [], hue: 28,
+      options: [{ name: 'Doneness', type: 'single', required: true, choices: [{ n: 'Medium rare', p: 0 }, { n: 'Medium', p: 0 }, { n: 'Well done', p: 0 }] },
+                { name: 'Add-ons', type: 'multi', choices: [{ n: 'Bacon', p: 2.5 }, { n: 'Cheddar', p: 1.5 }, { n: 'Fried egg', p: 1.5 }] }] },
+    { id: 'p1', cat: 'pizza', name: 'Margherita Flatbread', desc: 'San Marzano tomato, mozzarella, basil.', price: 14, emoji: '🍕', tags: ['V'], hue: 8 },
+    { id: 'p2', cat: 'pizza', name: 'Spicy Soppressata', desc: 'Calabrian chili, hot honey, fior di latte.', price: 16.5, emoji: '🌶️', tags: [], hue: 0 },
+    { id: 'p3', cat: 'pizza', name: 'Zucchini & Ricotta', desc: 'Lemon zest, mint, toasted almonds.', price: 15, emoji: '🥒', tags: ['V'], hue: 120 },
+    { id: 'd1', cat: 'desserts', name: 'Baklava Cheesecake', desc: 'Phyllo crumble, pistachio, rose syrup.', price: 9, emoji: '🍰', tags: ['V'], hue: 45 },
+    { id: 'd2', cat: 'desserts', name: 'Dark Chocolate Pot', desc: 'Olive oil, sea salt, whipped cream.', price: 8, emoji: '🍫', tags: ['V', 'GF'], hue: 25 },
+    { id: 'k1', cat: 'drinks', name: 'Fresh Mint Lemonade', desc: 'House-pressed, lightly sweet.', price: 5, emoji: '🍋', tags: ['V', 'GF'], hue: 70,
+      options: [{ name: 'Size', type: 'single', required: true, choices: [{ n: 'Regular', p: 0 }, { n: 'Large', p: 1.5 }] }] },
+    { id: 'k2', cat: 'drinks', name: 'Turkish Coffee', desc: 'Cardamom, served with a sweet.', price: 4, emoji: '☕', tags: ['V'], hue: 30 },
+    { id: 'k3', cat: 'drinks', name: 'Sparkling Water', desc: '750 ml bottle.', price: 4.5, emoji: '🫧', tags: ['V', 'GF'], hue: 200 },
+  ],
+};
